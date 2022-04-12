@@ -1,15 +1,18 @@
 <template>
-  <MemberList />
+  <div>
+    {{ member.id }}
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import MemberList from '../components/MemberList.vue'
 
 export default defineComponent({
-  name: 'HomeView',
-  components: {
-    MemberList,
+  props: {
+    member: {
+      type: Object,
+      required: true,
+    },
   },
 })
 </script>
