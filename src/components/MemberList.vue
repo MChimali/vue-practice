@@ -1,20 +1,30 @@
 <template>
-  <ul class="member-list">
-    <li v-for="member in list" :key="member.login">
-      <router-link :to="`/detail/${member.id}`">
-        <div class="member-container">
-          <img class="member-image member-element" :src="member.avatar_url" />
-          <span>{{ member.id }}</span>
-        </div>
-      </router-link>
-    </li>
-  </ul>
+  <div>
+    <input
+      type="text"
+      :value="organization"
+      @change="(event) => onChangeInput(event.target.value)"
+    />
+    <OrgUpdateButton :org="organization" @updateOrg="updateOrg" />
+    <ul class="member-list">
+      <li v-for="member in list" :key="member.login">
+        <router-link :to="`/detail/${member.id}`">
+          <div class="member-container">
+            <img class="member-image member-element" :src="member.avatar_url" />
+            <span>{{ member.id }}</span>
+          </div>
+        </router-link>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script lang="ts">
 import { getMembers } from '../services/members'
 import { defineComponent } from 'vue'
 import { Member } from '../types/types'
+import OrgUpdateButton from './OrgUpdateButton.vue'
+import { mapActions, mapGetters } from 'vuex'
 
 declare module '@vue/runtime-core' {
   export interface ComponentCustomProperties {
@@ -23,8 +33,13 @@ declare module '@vue/runtime-core' {
 }
 
 export default defineComponent({
+  components: {
+    OrgUpdateButton,
+  },
   computed: {
-    console: () => console,
+    ...mapGetters('OrganizationModule', {
+      organization: 'organization',
+    }),
   },
   data() {
     return {
@@ -32,7 +47,16 @@ export default defineComponent({
     }
   },
   created() {
-    getMembers().then((response) => (this.list = response))
+    getMembers(this.organization).then((response) => (this.list = response))
+  },
+  methods: {
+    updateOrg(): void {
+      getMembers(this.organization).then((response) => (this.list = response))
+    },
+    ...mapActions('OrganizationModule', ['updateOrganization']),
+    onChangeInput(string: string) {
+      this.updateOrganization(string)
+    },
   },
 })
 </script>
@@ -56,5 +80,8 @@ export default defineComponent({
 }
 .member-image {
   width: 120px;
+}
+input {
+  margin: 0.2rem 0 0.2rem 0;
 }
 </style>

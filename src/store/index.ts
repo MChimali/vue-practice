@@ -1,9 +1,8 @@
 import { createStore } from 'vuex'
+import OrganizationModule from './Organization'
 
 export default createStore({
-  state: {},
-  getters: {},
-  mutations: {},
-  actions: {},
-  modules: {},
+  modules: {
+    OrganizationModule: OrganizationModule,
+  },
 })

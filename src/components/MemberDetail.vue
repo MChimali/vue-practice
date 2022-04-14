@@ -35,7 +35,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, PropType } from 'vue'
+import { Member } from '../types/types'
 
 export default defineComponent({
   data: () => ({
@@ -43,7 +44,7 @@ export default defineComponent({
   }),
   props: {
     member: {
-      type: Object,
+      type: Object as PropType<Member>,
       required: true,
     },
   },

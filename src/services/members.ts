@@ -1,6 +1,6 @@
 import { Member } from '../types/types'
-export const getMembers = (): Promise<Member[]> =>
-  fetch('https://api.github.com/orgs/lemoncode/members').then((members) =>
+export const getMembers = (org: string): Promise<Member[]> =>
+  fetch(`https://api.github.com/orgs/${org}/members`).then((members) =>
     members.json()
   )
 
